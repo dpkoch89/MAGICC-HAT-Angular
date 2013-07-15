@@ -1,0 +1,28 @@
+<h1>Person Detail</h1>
+
+<form name="personForm">
+	
+	<p>Person ID: {{person.personID}}</p>
+	
+	<p>
+		<label for="firstName">First Name:</label>
+		<input name="firstName" data-ng-model="person.firstName" required>
+		<span style="color:#a00;" data-ng-show="personForm.firstName.$error.required">Required</span>
+	</p>
+	
+	<p>
+		<label for="lastName">Last Name:</label>
+		<input name="lastName" data-ng-model="person.lastName" required>
+		<span style="color:#a00;" data-ng-show="personForm.lastName.$error.required">Required</span>
+	</p>
+	
+	<p>
+		<label for="archived">Archived:</label>
+		<input type="checkbox" name="archived" data-ng-model="person.archived" data-ng-true-value="1" data-ng-false-value="0">
+	</p>
+	
+	<a href="#/" class="button">Cancel</a>
+	<button data-ng-click="save()" data-ng-disabled="!isModified()">Save</button>
+	
+	<p>Is Modified: {{isModified()}}</p>
+</form>

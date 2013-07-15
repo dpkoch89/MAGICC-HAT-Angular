@@ -1,0 +1,40 @@
+<h1>People</h1>
+	
+<p>
+	<label for="search-box">Search:</label>
+	<input type="search" name="search-box" data-ng-model="searchQuery.$">
+</p>
+
+<p>
+	<label for="sort-by">Sort By:</label>
+	<select data-ng-model="orderProp">
+		<option value="personID">ID</option>
+		<option value="firstName">First Name</option>
+		<option value="lastName">Last Name</option>
+	</select>
+</p>
+
+<div>
+	<p>Columns to show:<br>
+		<input type="checkbox" name="showPersonID" data-ng-model="showPersonID"><label for="showPersonID">Person ID</label>
+		<input type="checkbox" name="showArchived" data-ng-model="showArchived"><label for="showArchived">Archived</label>
+		<input type="checkbox" data-ng-model="searchQuery.archived" data-ng-true-value="1" data-ng-false-value="0">
+	</p> 
+</div>
+
+<table>
+	<tr>
+		<th data-ng-show="showPersonID">ID</th>
+		<th>First Name</th>
+		<th>Last Name</th>
+		<th data-ng-show="showArchived">Archived</th>
+		<th>Edit</th>
+	</tr>
+	<tr data-ng-repeat="person in people | filter:searchQuery | orderBy:orderProp">
+		<td data-ng-show="showPersonID">{{person.personID}}</td>
+		<td>{{person.firstName}}</td>
+		<td>{{person.lastName}}</td>
+		<td data-ng-show="showArchived">{{person.archived}}</td>
+		<td><a href="#/people/{{person.personID}}">Edit</a></td>
+	</tr>
+</table>
