@@ -66,19 +66,19 @@
    }
    
    // returns all records in the database object
-   public function query($request_data) {}
+   public function query($request) {}
    
    // returns a single record from the database object
-   public function get($request_data) {}
+   public function get($request) {}
    
    // creates a new record in the database object
-   public function create($request_data) {}
+   public function create($request) {}
    
    // updates an existing record in the database object
-   public function update($request_data) {}
+   public function update($request) {}
    
    // deletes a record from the database object
-   public function delete($request_data) {}
+   public function delete($request) {}
    
    // gets the status code
    public function getStatusCode()

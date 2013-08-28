@@ -15,17 +15,60 @@
  */
 class RestRequest
 {
+  private $method_; // the HTTP request method
+  private $table_; // the database table specified in the request URL
+  private $id_; // the record ID (if any) specified in the request URL
   private $request_vars_; // the request variables passed in with the HTTP request
   private $data_; // the parsed JSON data passed in with the HTTP request
-  private $http_accept_; // we don't need this?
-  private $method_; // the HTTP request method
   
   public function __construct()
   {
+    $this->table_ = '';
+    $this->id_ = '';
+    $this->has_id_ = false;
     $this->request_vars_ = array();
     $this->data_ = '';
-    $this->http_accept_ = 'json'; // do we need this if we're only providing json encoded data?
     $this->method_ = 'get';
+  }
+  
+  public function getMethod()
+  {
+    return $this->method_;
+  }
+  
+  public function setMethod($method)
+  {
+    $this->method_ = $method;
+  }
+  
+  public function getTable()
+  {
+    return $this->table_;
+  }
+  
+  public function setTable($table)
+  {
+    $this->table_ = $table;
+  }
+  
+  public function getID()
+  {
+    return $this->id_;
+  }
+  
+  public function setID($id)
+  {
+    $this->id_ = $id;
+  }
+  
+  public function getHasID()
+  {
+    return $this->has_id_;
+  }
+  
+  public function setHasID($has_id)
+  {
+    $this->has_id_ = $has_id;
   }
   
   public function getRequestVars()
@@ -46,21 +89,6 @@ class RestRequest
   public function setData($data)
   {
     $this->data_ = $data;
-  }
-  
-  public function getHttpAccept() // do we need this?
-  {
-    return $this->http_accept_;
-  }
-  
-  public function getMethod()
-  {
-    return $this->method_;
-  }
-  
-  public function setMethod($method)
-  {
-    $this->method_ = $method;
   }
 }
 

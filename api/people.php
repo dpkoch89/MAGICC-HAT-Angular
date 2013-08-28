@@ -19,7 +19,7 @@ require_once('database_object.php');
  class People extends DatabaseObject
  {
    // retrieve all records in the database
-   public function query($request_data)
+   public function query($request)
    {     
      if ($this->connectToDB())
      {
@@ -45,13 +45,13 @@ require_once('database_object.php');
    }
    
    // returns a single record from the database object
-   public function get($request_data)
+   public function get($request)
    {
-     if (isset($request_data['ID']))
+     if ($request->getHasID())
      {
        if ($this->connectToDB())
        {
-         $personID = $request_data['ID'];
+         $personID = $request->getID();
          $sql = mysqli_query($this->db_connection_, "SELECT * FROM people WHERE personID = $personID");
          
          $this->status_code_ = 200;

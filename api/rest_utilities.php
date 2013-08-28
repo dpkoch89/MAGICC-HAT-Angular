@@ -29,6 +29,24 @@ class RestUtilities
     
     // get request method
     $request_method = strtolower($_SERVER['REQUEST_METHOD']);
+    $return_obj->setMethod($request_method);
+    
+    // get table and id from URL
+    $url_array = explode('/', $_SERVER['REQUEST_URI']);
+    array_shift($url_array); // remove first entry (empty)
+    array_shift($url_array); // remove second entry ('api')
+    
+    $return_obj->setTable($url_array[0]);
+    
+    if (isset($url_array[1]))
+    {
+      $return_obj->setHasID(true);
+      $return_obj->setID($url_array[1]);
+    }
+    else
+    {
+      $return_obj->setHasID(false);
+    }
     
     // get data
     switch ($request_method)
@@ -46,9 +64,6 @@ class RestUtilities
         
       // note: we don't accept data for delete request, so 'delete' is not included in this switch statement 
     }
-
-    // store the method
-    $return_obj->setMethod($request_method);
     
     // store the raw data in case we need it later
     $return_obj->setRequestVars($data['data']); // assumes the data is passed in as JSON data with 'data' as the key (e.g. /..?data=<json data>), may need to change depending on how AngularJS does it

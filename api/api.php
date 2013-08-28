@@ -21,20 +21,14 @@ require_once('people.php');
 $rest_request = RestUtilities::processRequest();
 
 // determine which class to use
-$url_array = explode('/', $_SERVER['REQUEST_URI']);
-array_shift($url_array); // remove first entry (empty)
-array_shift($url_array); // remove second entry ('api')
-
-switch ($url_array[0])
+switch ($rest_request->getTable())
 {
   case 'people':
     $database_object = new People();
     break;
   default:
     // report bad request
-    $status_code = 400;
-    $body = '';
-    RestUtilities::sendResponse($status_code, $body);
+    RestUtilities::sendResponse(400);
     die();
     break;
 }
@@ -43,21 +37,18 @@ switch ($url_array[0])
 switch($rest_request->getMethod())
 {
   case 'get':
-    if (isset($url_array[1]))
+    if ($rest_request->getHasID())
     {
-      $data = Array('ID' => $url_array[1]);
-      $database_object->get($data);
+      $database_object->get($rest_request);
     }
     else
     {
-      $database_object->query($rest_request->getData());
+      $database_object->query($rest_request);
     }
     break;
   default:
     // report not implemented
-    $status_code = 501;
-    $body = '';
-    RestUtilities::sendResponse($status_code, $body);
+    RestUtilities::sendResponse(501);
     die();
     break;
 }
