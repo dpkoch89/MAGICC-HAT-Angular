@@ -22,7 +22,7 @@
 	</p>
 	
 	<a href="#/" class="button">Cancel</a>
-	<button data-ng-click="save()" data-ng-disabled="!isModified()">Save</button>
+	<button data-ng-click="save()" data-ng-disabled="!isModified() || personForm.$invalid">Save</button>
 	
 	<p>Is Modified: {{isModified()}}</p>
 </form>

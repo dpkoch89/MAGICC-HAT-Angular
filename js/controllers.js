@@ -2,10 +2,12 @@ function HomeCtrl($scope) {
 }
 
 function PeopleCtrl($scope, People) {
-	$scope.people = People.query();
 	$scope.orderProp = 'personID';
-	$scope.showPersonID = false;
+	$scope.showPersonIDColumn = false;
+	$scope.showArchivedColumn = false;
 	$scope.showArchived = false;
+	
+	$scope.people = People.query();
 }
 
 function PersonDetailCtrl($scope, $routeParams, People) {

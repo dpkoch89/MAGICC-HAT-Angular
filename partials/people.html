@@ -2,7 +2,7 @@
 	
 <p>
 	<label for="search-box">Search:</label>
-	<input type="search" name="search-box" data-ng-model="searchQuery.$">
+	<input type="search" name="search-box" data-ng-model="searchQuery">
 </p>
 
 <p>
@@ -16,25 +16,26 @@
 
 <div>
 	<p>Columns to show:<br>
-		<input type="checkbox" name="showPersonID" data-ng-model="showPersonID"><label for="showPersonID">Person ID</label>
-		<input type="checkbox" name="showArchived" data-ng-model="showArchived"><label for="showArchived">Archived</label>
-		<input type="checkbox" data-ng-model="searchQuery.archived" data-ng-true-value="1" data-ng-false-value="0">
-	</p> 
+		<input type="checkbox" name="showPersonIDColumn" data-ng-model="showPersonIDColumn"><label for="showPersonIDColumn">Person ID</label>
+		<input type="checkbox" name="showArchivedColumn" data-ng-model="showArchivedColumn"><label for="showArchivedColumn">Archived</label>
+	</p>
+	
+	<p>Show archived records: <input type="checkbox" data-ng-model="showArchived" data-ng-true-value="1" data-ng-false-value="0"></p>
 </div>
 
 <table>
 	<tr>
-		<th data-ng-show="showPersonID">ID</th>
+		<th data-ng-show="showPersonIDColumn">ID</th>
 		<th>First Name</th>
 		<th>Last Name</th>
-		<th data-ng-show="showArchived">Archived</th>
+		<th data-ng-show="showArchivedColumn">Archived</th>
 		<th>Edit</th>
 	</tr>
-	<tr data-ng-repeat="person in people | filter:searchQuery | orderBy:orderProp">
-		<td data-ng-show="showPersonID">{{person.personID}}</td>
+	<tr data-ng-repeat="person in people | filter:searchQuery | showArchivedRecords:showArchived | orderBy:orderProp">
+		<td data-ng-show="showPersonIDColumn">{{person.personID}}</td>
 		<td>{{person.firstName}}</td>
 		<td>{{person.lastName}}</td>
-		<td data-ng-show="showArchived">{{person.archived}}</td>
+		<td data-ng-show="showArchivedColumn">{{person.archived | boolToAlpha}}</td>
 		<td><a href="#/people/{{person.personID}}">Edit</a></td>
 	</tr>
 </table>

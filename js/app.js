@@ -1,4 +1,4 @@
-angular.module('magicchat', ['magicchatServices']).
+angular.module('magicchat', ['magicchatServices', 'magicchatFilters']).
 	config(['$routeProvider', function($routeProvider) {
 		$routeProvider.
 			when('/', {templateUrl: 'partials/home.html', controller: HomeCtrl}).

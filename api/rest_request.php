@@ -1,14 +1,12 @@
-<!--
-  
-  File: rest_request.php
-  Author: Daniel Koch <dkoch89@gmail.com>
-  Date: 14 July 2013
-  
-  Provides the RestRequest class
-  
--->
-
 <?php
+
+/*
+ * File: rest_request.php
+ * Author: Daniel Koch <dkoch89@gmail.com>
+ * Date: 14 July 2013
+ * 
+ * Provides the RestRequest class
+ */
 
 /*
  * RestRequest

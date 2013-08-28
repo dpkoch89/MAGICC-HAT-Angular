@@ -1,0 +1,76 @@
+CREATE DATABASE IF NOT EXISTS magicc_hat;
+USE magicc_hat;
+
+CREATE TABLE people (
+  personID INT NOT NULL AUTO_INCREMENT,
+  firstName VARCHAR(45) NOT NULL,
+  lastName VARCHAR(45),
+  archived BOOL NOT NULL DEFAULT '0',
+
+  PRIMARY KEY (personID)
+);
+
+CREATE TABLE categories (
+  categoryID INT NOT NULL AUTO_INCREMENT,
+  categoryName VARCHAR(45) NOT NULL,
+  description TEXT,
+  archived BOOL NOT NULL DEFAULT '0',
+
+  PRIMARY KEY (categoryID)
+);
+
+CREATE TABLE homes (
+  homeID INT NOT NULL AUTO_INCREMENT,
+  homeName VARCHAR(45) NOT NULL,
+  notes TEXT,
+  archived BOOL NOT NULL DEFAULT '0',
+
+  PRIMARY KEY (homeID)
+};
+
+CREATE TABLE items (
+  itemID INT NOT NULL AUTO_INCREMENT,
+  itemName VARCHAR(100) NOT NULL,
+  identifier VARCHAR(100),
+  quantity INT NOT NULL,
+  categoryID INT NOT NULL,
+  homeID INT NOT NULL,
+  itemStatus ENUM('normal', 'broken', 'missing') NOT NULL DEFAULT 'normal',
+  description TEXT,
+  image VARCHAR(45),
+  notes TEXT,
+  archived BOOL NOT NULL DEFAULT '0',
+
+  PRIMARY KEY (itemID),
+  FOREIGN KEY (categoryID) REFERENCES categories(categoryID),
+  FOREIGN KEY (homeID) REFERENCES homes(homeID)
+};
+
+CREATE TABLE projects (
+  projectID INT NOT NULL AUTO_INCREMENT,
+  projectName VARCHAR(45) NOT NULL,
+  description TEXT,
+  archived BOOL NOT NULL DEFAULT '0',
+
+  PRIMARY KEY (projectID)
+);
+
+CREATE TABLE checkouts (
+  checkoutID INT NOT NULL AUTO_INCREMENT,
+  itemID INT NOT NULL,
+  personID INT NOT NULL,
+  projectID INT,
+  quantity INT NOT NULL,
+  outDateTime DATETIME,
+  inDateTime DATETIME,
+  outNotes TEXT,
+  inNotes TEXT,
+  checkedIn BOOL,
+  archived BOOL NOT NULL DEFAULT '0',
+  
+  PRIMARY KEY (checkoutID),
+  FOREIGN KEY (itemID) REFERENCES items(itemID),
+  FOREIGN KEY (personID) REFERENCES people(personID),
+  FOREIGN KEY (projectID) REFERENCES projects(projectID)
+);
+

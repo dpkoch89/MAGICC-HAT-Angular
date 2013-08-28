@@ -1,17 +1,15 @@
-<!--
-  
-  File: rest_utilities.php
-  Author: Daniel Koch <dkoch89@gmail.com>
-  Date: 14 July 2013
-  
-  Provides the RestUtilities class
-  
--->
-
 <?php
 
+/*
+ * File: rest_utilities.php
+ * Author: Daniel Koch <dkoch89@gmail.com>
+ * Date: 14 July 2013
+ * 
+ * Provides the RestUtilities class
+ */
+
 // include required files
-require_once($_SERVER['DOCUMENT_ROOT'] . '/api/rest_request.php');
+require_once('rest_request.php');
 
 /*
  * RestUtilities
@@ -19,6 +17,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/api/rest_request.php');
  * This class provides utility functions needed for creating the REST API (handling the HTTP request and sending the
  * response)
  */
+
 class RestUtilities
 {
   // processes the HTTP request, returning a RestRequest object containing the request data
@@ -67,7 +66,54 @@ class RestUtilities
   // sends the HTTP response with the status code and body provided in the function arguments
   public static function sendResponse($status = 200, $body = '', $content_type = 'text/html')
   {
+    $status_header = 'HTTP/1.1 ' . $status . ' ' . RestUtilities::getStatusCodeMessage($status);
+    header($status_header);
+    header('Content-type: ' . $content_type);
     
+    if ($body != '')
+    {
+      echo $body;
+      exit;
+    }
+    else
+    {
+      $message = '';
+      
+      switch ($status) {
+        case 400:
+          $message = 'The server could not process your request: the request was bad.';
+          break;
+        case 404:
+          $message = 'The requested URL ' . $_SERVER['REQUEST_URI'] . ' was not found.';
+          break;
+        case 500:
+          $message = 'The server encountered an error processing your request.';
+          break;
+        case 501:
+          $message = 'The requested method is not implemented.';
+          break;
+      }
+      
+      // servers don't always have a signature turned on (this is an apache directive "ServerSignature On")
+      $signature = ($_SERVER['SERVER_SIGNATURE'] == '') ? $_SERVER['SERVER_SOFTWARE'] . ' Server at ' . $_SERVER['SERVER_NAME'] . ' Port ' . $_SERVER['SERVER_PORT'] : $_SERVER['SERVER_SIGNATURE'];
+      
+      $body = '<!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html">
+        <title>' . $status . ' ' . RestUtilities::getStatusCodeMessage($status) . '</title>
+      </head>
+      <body>
+        <h1>' . RestUtilities::getStatusCodeMessage($status) . '</h1>
+        <p>' . $message . '</p>
+        <hr>
+        <address>' . $signature . '</address>
+      </body>
+      </html>';
+        
+      echo $body;
+    }
   }
   
   // gets the human-readable message associated with the given status code
@@ -117,7 +163,7 @@ class RestUtilities
       505 => 'HTTP Version Not Supported'
     );
     
-    return (isset($codes($status))) ? $codes($status) : '';
+    return (isset($codes[$status])) ? $codes[$status] : '';
   }
 
 }
