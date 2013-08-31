@@ -20,56 +20,15 @@ require_once('database_object.php');
  {
    // retrieve all records in the database
    public function query($request)
-   {     
-     if ($this->connectToDB())
-     {
-       // retrieve records from database
-       $sql = mysqli_query($this->db_connection_, "SELECT * FROM people");
-      
-       // return results encoded in JSON format
-       $result = array();
-       while ($rlt = mysqli_fetch_assoc($sql))
-       {
-         $result[] = $rlt;
-       }
-       
-       $this->status_code_ = 200;
-       $this->body_ = json_encode($result);
-       $this->disconnectFromDB();
-     }
-     else // could not connect to database
-     {
-       $this->status_code_ = 500;
-       $this->body_ = '';
-     }
+   {
+     parent::executeQuery($request, "SELECT * FROM people");
    }
    
    // returns a single record from the database object
    public function get($request)
    {
-     if ($request->getHasID())
-     {
-       if ($this->connectToDB())
-       {
-         $personID = $request->getID();
-         $sql = mysqli_query($this->db_connection_, "SELECT * FROM people WHERE personID = $personID");
-         
-         $this->status_code_ = 200;
-         $this->body_ = json_encode(mysqli_fetch_assoc($sql));
-         
-         $this->disconnectFromDB();
-       }
-       else // could not connect to database
-       {
-         $this->status_code_ = 500;
-         $this->body_ = '';
-       }
-     }
-     else // request did not contain personID
-     {
-       $this->status_code_ = 400;
-       $this->body_ = '';
-     }
+     $personID = $request->getID();
+     parent::executeGet($request, "SELECT * FROM people WHERE personID = $personID");
    }
    
  }

@@ -92,4 +92,49 @@
      return $this->body_;
    }
    
+   // performs the actual query operation
+   protected function executeQuery($request, $query)
+   {
+     if ($this->connectToDB())
+     {
+       // retrieve records from database
+       $sql = mysqli_query($this->db_connection_, $query);
+      
+       // return results encoded in JSON format
+       $result = array();
+       while ($rlt = mysqli_fetch_assoc($sql))
+       {
+         $result[] = $rlt;
+       }
+       
+       $this->status_code_ = 200;
+       $this->body_ = json_encode($result);
+       $this->disconnectFromDB();
+     }
+     else // could not connect to database
+     {
+       $this->status_code_ = 500;
+       $this->body_ = '';
+     }
+   }
+   
+   // performs the actual get operation
+   protected function executeGet($request, $query)
+   {
+     if ($this->connectToDB())
+     {
+       $sql = mysqli_query($this->db_connection_, $query);
+       
+       $this->status_code_ = 200;
+       $this->body_ = json_encode(mysqli_fetch_assoc($sql));
+       
+       $this->disconnectFromDB();
+     }
+     else // could not connect to database
+     {
+       $this->status_code_ = 500;
+       $this->body_ = '';
+     }
+ }
+   
  }
