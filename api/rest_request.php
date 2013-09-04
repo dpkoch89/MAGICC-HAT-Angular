@@ -18,7 +18,6 @@ class RestRequest
   private $method_; // the HTTP request method
   private $table_; // the database table specified in the request URL
   private $id_; // the record ID (if any) specified in the request URL
-  private $request_payload_; // the raw request payload passed in with the HTTP request
   private $data_; // the parsed JSON data passed in with the HTTP request
   
   public function __construct()
@@ -69,16 +68,6 @@ class RestRequest
   public function setHasID($has_id)
   {
     $this->has_id_ = $has_id;
-  }
-  
-  public function getRequestPayload()
-  {
-    return $this->request_payload_;
-  }
-  
-  public function setRequestPayload($request_payload)
-  {
-    $this->request_payload_ = $request_payload;
   }
   
   public function getData()

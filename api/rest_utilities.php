@@ -56,19 +56,14 @@ class RestUtilities
         // like this? (test): $data = get_object_vars(json_decode(file_get_contents('php://input')));
         break;*/
       case 'post':
-        $payload = file_get_contents('php://input');
-        $data = get_object_vars(json_decode($payload));
+        $data = get_object_vars(json_decode(file_get_contents('php://input')));
         break;
       case 'put':
-        $payload = file_get_contents('php://input');
-        $data = get_object_vars(json_decode($payload));
+        $data = get_object_vars(json_decode(file_get_contents('php://input')));
         break;
         
       // note: we don't accept data for delete request, so 'delete' is not included in this switch statement 
     }
-    
-    // store the raw request payload (probably don't need to do this)
-    $return_obj->setRequestPayload($payload);
     
     // store the decoded data
     $return_obj->setData($data);
