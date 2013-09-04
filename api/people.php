@@ -31,6 +31,23 @@ require_once('database_object.php');
      parent::executeGet($request, "SELECT * FROM people WHERE personID = $personID");
    }
    
+   // creates a new record
+   public function create($request)
+   {
+     // get request data
+     $data = $request->getData();
+     
+     // extract and sanitize data
+     $firstName = $data['firstName'];
+     $lastName = $data['lastName'];
+     $archived = isset($data['archived']) ? $data['archived'] : 0; // could also set to 'DEFAULT' by default
+     
+     // form query and execute create operation
+     parent::executeCreate($request,
+       "INSERT INTO people(firstName, lastName, archived) VALUES ('$firstName', '$lastName', $archived)");
+   }
+   
+   // updates an existing record
    public function update($request)
    {
      // get request data

@@ -2,7 +2,7 @@
 
 <form name="personForm">
 	
-	<p>Person ID: {{person.personID}}</p>
+	<p data-ng-show="person.personID">Person ID: {{person.personID}}</p>
 	
 	<p>
 		<label for="firstName">First Name:</label>
@@ -21,7 +21,7 @@
 		<input type="checkbox" name="archived" data-ng-model="person.archived" data-ng-true-value="1" data-ng-false-value="0">
 	</p>
 	
-	<a href="#/" class="button">Cancel</a>
+	<a href="#/people" class="button">Cancel</a>
 	<button data-ng-click="save()" data-ng-disabled="!isModified() || personForm.$invalid">Save</button>
 	
 	<p>Is Modified: {{isModified()}}</p>

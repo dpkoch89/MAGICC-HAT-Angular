@@ -46,10 +46,12 @@ switch($rest_request->getMethod())
       $database_object->query($rest_request);
     }
     break;
+  case 'post':
+    $database_object->create($rest_request);
+    break;
   case 'put':
     $database_object->update($rest_request);
     break;
-  case 'post':
   case 'delete':
   default:
     // report not implemented

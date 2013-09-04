@@ -30,7 +30,17 @@ function PersonDetailCtrl($scope, $location, $routeParams, People) {
 	});
 }
 
-function PersonCreateCtrl($scope, People) {}
+function PersonCreateCtrl($scope, $location, People) {
+  $scope.isModified = function() {
+    return true;
+  }
+  
+  $scope.save = function() {
+    People.create($scope.person, function() {
+      $location.path('/people');
+    });
+  }
+}
 
 function ItemsCtrl($scope, $http) {
 	$http.get('/tables/items_table.php').success(function (data) {

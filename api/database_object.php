@@ -145,6 +145,27 @@
      }
    }
    
+   // performes the actual create operation
+   protected function executeCreate($request, $query)
+   {
+     if ($this->connectToDB())
+     {
+       // perform the update operation
+       mysqli_query($this->db_connection_, $query);
+       
+       // send the updated record ID back as the response
+       $this->status_code_ = 200;
+       $this->body_ = '';
+       
+       $this->disconnectFromDB();
+     }
+     else // could not connect to database
+     {
+       $this->status_code_ = 500;
+       $this->body_ = '';
+     }
+   }
+   
    // performs the actual update operation
    protected function executeUpdate($request, $query)
    {
