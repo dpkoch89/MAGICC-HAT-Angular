@@ -46,6 +46,11 @@ switch($rest_request->getMethod())
       $database_object->query($rest_request);
     }
     break;
+  case 'put':
+    $database_object->update($rest_request);
+    break;
+  case 'post':
+  case 'delete':
   default:
     // report not implemented
     RestUtilities::sendResponse(501);
@@ -54,6 +59,6 @@ switch($rest_request->getMethod())
 }
 
 // send the response
-RestUtilities::sendResponse($database_object->getStatusCode(), $database_object->getBody());
+RestUtilities::sendResponse($database_object->getStatusCode(), $database_object->getBody(), 'application/json');
 
 ?>

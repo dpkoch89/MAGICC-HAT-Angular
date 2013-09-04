@@ -31,5 +31,20 @@ require_once('database_object.php');
      parent::executeGet($request, "SELECT * FROM people WHERE personID = $personID");
    }
    
+   public function update($request)
+   {
+     // get request data
+     $data = $request->getData();
+     
+     // extract and sanitize data
+     $personID = $data['personID'];
+     $firstName = $data['firstName'];
+     $lastName = $data['lastName'];
+     $archived = $data['archived'];
+     
+     // form query and execute update operation
+     parent::executeUpdate($request,
+       "UPDATE people SET firstName='$firstName', lastName='$lastName', archived=$archived WHERE personID=$personID");
+   }
  }
 ?>

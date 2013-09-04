@@ -10,7 +10,7 @@ function PeopleCtrl($scope, People) {
 	$scope.people = People.query();
 }
 
-function PersonDetailCtrl($scope, $routeParams, People) {
+function PersonDetailCtrl($scope, $location, $routeParams, People) {
 	$scope.remote = People.get({personID: $routeParams.personID}, function() {
 		
 		// make a local copy
@@ -20,8 +20,17 @@ function PersonDetailCtrl($scope, $routeParams, People) {
 		$scope.isModified = function() {
 			return !angular.equals($scope.person, $scope.remote);
 		}
+		
+		// save changes
+		$scope.save = function() {
+		  $scope.remote = angular.copy($scope.person);
+		  $scope.remote.$update();
+		  $location.path('/people');
+		}
 	});
 }
+
+function PersonCreateCtrl($scope, People) {}
 
 function ItemsCtrl($scope, $http) {
 	$http.get('/tables/items_table.php').success(function (data) {

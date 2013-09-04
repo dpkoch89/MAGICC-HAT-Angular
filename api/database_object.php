@@ -121,20 +121,61 @@
    // performs the actual get operation
    protected function executeGet($request, $query)
    {
-     if ($this->connectToDB())
+     if ($request->getHasID())
      {
-       $sql = mysqli_query($this->db_connection_, $query);
-       
-       $this->status_code_ = 200;
-       $this->body_ = json_encode(mysqli_fetch_assoc($sql));
-       
-       $this->disconnectFromDB();
+       if ($this->connectToDB())
+       {
+         $sql = mysqli_query($this->db_connection_, $query);
+         
+         $this->status_code_ = 200;
+         $this->body_ = json_encode(mysqli_fetch_assoc($sql));
+         
+         $this->disconnectFromDB();
+       }
+       else // could not connect to database
+       {
+         $this->status_code_ = 500;
+         $this->body_ = '';
+       }
      }
-     else // could not connect to database
+     else // request did not contain personID
      {
-       $this->status_code_ = 500;
+       $this->status_code_ = 400;
        $this->body_ = '';
      }
- }
+   }
+   
+   // performs the actual update operation
+   protected function executeUpdate($request, $query)
+   {
+     if ($request->getHasID())
+     {
+       if ($this->connectToDB())
+       {
+         // perform the update operation
+         mysqli_query($this->db_connection_, $query);
+         //$meh = mysqli_affected_rows($this->db_connection_);
+         
+         // send the updated record ID back as the response
+         $this->status_code_ = 200;
+         $this->body_ = $request->getID();
+         //$this->body_ = $meh;
+         //$this->body_ = $sql;
+         //$this->body_ = $query . PHP_EOL . 'Rows affected: ' . $meh;
+         
+         $this->disconnectFromDB();
+       }
+       else // could not connect to database
+       {
+         $this->status_code_ = 500;
+         $this->body_ = '';
+       }
+     }
+     else // request did not contain personID
+     {
+       $this->status_code_ = 400;
+       $this->body_ = '';
+     }
+   }
    
  }

@@ -51,28 +51,27 @@ class RestUtilities
     // get data
     switch ($request_method)
     {
-      case 'get':
+      /*case 'get': // do we even want to implement this for get?
         $data = $_GET;
-        break;
+        // like this? (test): $data = get_object_vars(json_decode(file_get_contents('php://input')));
+        break;*/
       case 'post':
-        $data = $_POST;
+        $payload = file_get_contents('php://input');
+        $data = get_object_vars(json_decode($payload));
         break;
       case 'put':
-        parse_str(file_get_contents('php://input'), $put_vars);
-        $data = $put_vars;
+        $payload = file_get_contents('php://input');
+        $data = get_object_vars(json_decode($payload));
         break;
         
       // note: we don't accept data for delete request, so 'delete' is not included in this switch statement 
     }
     
-    // store the raw data in case we need it later
-    $return_obj->setRequestVars($data['data']); // assumes the data is passed in as JSON data with 'data' as the key (e.g. /..?data=<json data>), may need to change depending on how AngularJS does it
+    // store the raw request payload (probably don't need to do this)
+    $return_obj->setRequestPayload($payload);
     
     // store the decoded data
-    if (isset($data['data']))
-    {
-      $return_obj->setData(json_decode($data['data']));
-    }
+    $return_obj->setData($data);
     
     // return the object
     return $return_obj;
@@ -83,15 +82,16 @@ class RestUtilities
   {
     $status_header = 'HTTP/1.1 ' . $status . ' ' . RestUtilities::getStatusCodeMessage($status);
     header($status_header);
-    header('Content-type: ' . $content_type);
     
     if ($body != '')
     {
+      header('Content-type: ' . $content_type);
       echo $body;
       exit;
     }
     else
     {
+      header('Content-type: text/html');
       $message = '';
       
       switch ($status) {
